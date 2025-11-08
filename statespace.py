@@ -66,7 +66,9 @@ def update(val):
     global x
     x = simulate(A_new, B_new)
     eigs_new = np.linalg.eigvals(A_new)
-    eig_text.set_text(f"Eigenvalues:\n{eigs_new[0].real:+.2f}{eigs_new[0].imag:+.2f}i\n{eigs_new[1].real:+.2f}{eigs_new[1].imag:+.2f}i")
+    eig_text.set_text(f"Eigenvalues:\n"
+                      f"{eigs_new[0].real:+.2f}{eigs_new[0].imag:+.2f}i\n"
+                      f"{eigs_new[1].real:+.2f}{eigs_new[1].imag:+.2f}i")
     if view_mode == "time":
         line1.set_xdata(time)
         line1.set_ydata(x[0, :])
@@ -86,6 +88,7 @@ def update(val):
     ax.relim()
     ax.autoscale_view()
     fig.canvas.draw_idle()
+    fig2.canvas.draw_idle()
 
 def toggle_view(event):
     global view_mode
@@ -104,6 +107,9 @@ def animate(i):
     return wheel_line,
 
 ani = FuncAnimation(fig2, animate, frames=n_steps, interval=dt*1000, blit=True)
+if not hasattr(ani, "_resize_id"):
+    ani._resize_id = None
 
 plt.show()
+
 
